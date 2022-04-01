@@ -1,5 +1,7 @@
 # dvcpktread-reproduction
 
+## Reproduce in docker
+
 Run the reproduction script to reproduce pkt error:
 
 ```
@@ -90,3 +92,8 @@ dvc.scm.CloneError: Failed to clone repo 'git@github.com:iterative/example-get-s
 2022-04-01 12:27:58,054 DEBUG: Spawned '['daemon', '-q', 'analytics', '/tmp/tmpfukqgasg']'
 
 ```
+
+## Reproduce without docker
+
+1) `pip install dvc==2.10.0`
+2) `dvc list git@github.com:iterative/example-get-started.git  --verbose`
