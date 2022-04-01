@@ -1,4 +1,5 @@
-FROM python:3.8
+# fails with python 3.8 also
+FROM python:3.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -7,6 +8,7 @@ RUN mkdir -p ~/.ssh/ \
     && chmod 700 ~/.ssh \
     && chmod 644 ~/.ssh/known_hosts
 
-RUN pip install dvc[s3]==2.10.0
+# passes with dvc==2.9.5
+RUN pip install dvc==2.10.0
 
 WORKDIR /mnt/workspace

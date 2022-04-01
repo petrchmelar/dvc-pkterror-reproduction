@@ -1,92 +1,92 @@
 # dvcpktread-reproduction
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Run the reproduction script to reproduce pkt error:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.ba.innovatrics.net/petr.chmelar/dvcpktread-reproduction.git
-git branch -M master
-git push -uf origin master
+./reproduce.sh
 ```
 
-## Integrate with your tools
+=>
 
-- [ ] [Set up project integrations](https://gitlab.ba.innovatrics.net/petr.chmelar/dvcpktread-reproduction/-/settings/integrations)
+```
+╰─❯ ./reproduce.sh 
+[+] Building 0.1s (8/8) FINISHED                                                                                                                                                                                                              
+ => [internal] load build definition from Dockerfile                                                                                                                                                                                     0.0s
+ => => transferring dockerfile: 97B                                                                                                                                                                                                      0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                        0.0s
+ => => transferring context: 2B                                                                                                                                                                                                          0.0s
+ => [internal] load metadata for docker.io/library/python:3.8                                                                                                                                                                            0.0s
+ => [1/4] FROM docker.io/library/python:3.8                                                                                                                                                                                              0.0s
+ => CACHED [2/4] RUN mkdir -p ~/.ssh/     && ssh-keyscan github.com >> ~/.ssh/known_hosts     && chmod 700 ~/.ssh     && chmod 644 ~/.ssh/known_hosts                                                                                    0.0s
+ => CACHED [3/4] RUN pip install dvc[s3]==2.10.0                                                                                                                                                                                         0.0s
+ => CACHED [4/4] WORKDIR /mnt/workspace                                                                                                                                                                                                  0.0s
+ => exporting to image                                                                                                                                                                                                                   0.1s
+ => => exporting layers                                                                                                                                                                                                                  0.0s
+ => => writing image sha256:651a17dda25f7fcdf84f8ba55d61868c85ce356c55561683f650238a3158ec89                                                                                                                                             0.0s
+ => => naming to docker.io/library/reproduction                                                                                                                                                                                          0.0s
+2022-04-01 12:27:56,310 DEBUG: Creating external repo git@github.com:iterative/example-get-started.git@None
+2022-04-01 12:27:56,310 DEBUG: erepo: git clone 'git@github.com:iterative/example-get-started.git' to a temporary dir
+2022-04-01 12:27:57,953 ERROR: failed to list 'git@github.com:iterative/example-get-started.git' - Failed to clone repo 'git@github.com:iterative/example-get-started.git' to '/tmp/tmp8mvwnvkbdvc-clone'                                     
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/scmrepo/git/backend/dulwich/__init__.py", line 193, in clone
+    repo = clone_from()
+  File "/usr/local/lib/python3.8/site-packages/dulwich/porcelain.py", line 443, in clone
+    return client.clone(
+  File "/usr/local/lib/python3.8/site-packages/dulwich/client.py", line 535, in clone
+    result = self.fetch(path, target, progress=progress, depth=depth)
+  File "/usr/local/lib/python3.8/site-packages/dulwich/client.py", line 601, in fetch
+    result = self.fetch_pack(
+  File "/usr/local/lib/python3.8/site-packages/dulwich/client.py", line 1125, in fetch_pack
+    self._handle_upload_pack_tail(
+  File "/usr/local/lib/python3.8/site-packages/dulwich/client.py", line 911, in _handle_upload_pack_tail
+    self._read_side_band64k_data(
+  File "/usr/local/lib/python3.8/site-packages/dulwich/client.py", line 665, in _read_side_band64k_data
+    for pkt in proto.read_pkt_seq():
+  File "/usr/local/lib/python3.8/site-packages/dulwich/protocol.py", line 290, in read_pkt_seq
+    pkt = self.read_pkt_line()
+  File "/usr/local/lib/python3.8/site-packages/dulwich/protocol.py", line 245, in read_pkt_line
+    raise GitProtocolError(
+dulwich.errors.GitProtocolError: Length of pkt read 0005 does not match length prefix 2004
 
-## Collaborate with your team
+The above exception was the direct cause of the following exception:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/dvc/scm.py", line 106, in clone
+    return Git.clone(url, to_path, progress=pbar.update_git, **kwargs)
+  File "/usr/local/lib/python3.8/site-packages/scmrepo/git/__init__.py", line 143, in clone
+    backend.clone(url, to_path, **kwargs)
+  File "/usr/local/lib/python3.8/site-packages/scmrepo/git/backend/dulwich/__init__.py", line 196, in clone
+    raise CloneError(url, to_path) from exc
+scmrepo.exceptions.CloneError: Failed to clone repo 'git@github.com:iterative/example-get-started.git' to '/tmp/tmp8mvwnvkbdvc-clone'
 
-## Test and Deploy
+During handling of the above exception, another exception occurred:
 
-Use the built-in continuous integration in GitLab.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/dvc/commands/ls/__init__.py", line 31, in run
+    entries = Repo.ls(
+  File "/usr/local/lib/python3.8/site-packages/dvc/repo/ls.py", line 31, in ls
+    with Repo.open(url, rev=rev, subrepos=True, uninitialized=True) as repo:
+  File "/usr/local/lib/python3.8/contextlib.py", line 113, in __enter__
+    return next(self.gen)
+  File "/usr/local/lib/python3.8/site-packages/dvc/external_repo.py", line 36, in external_repo
+    path = _cached_clone(url, rev, for_write=for_write)
+  File "/usr/local/lib/python3.8/site-packages/dvc/external_repo.py", line 162, in _cached_clone
+    clone_path, shallow = _clone_default_branch(url, rev, for_write=for_write)
+  File "/usr/local/lib/python3.8/site-packages/funcy/decorators.py", line 45, in wrapper
+    return deco(call, *dargs, **dkwargs)
+  File "/usr/local/lib/python3.8/site-packages/funcy/flow.py", line 274, in wrap_with
+    return call()
+  File "/usr/local/lib/python3.8/site-packages/funcy/decorators.py", line 66, in __call__
+    return self._func(*self._args, **self._kwargs)
+  File "/usr/local/lib/python3.8/site-packages/dvc/external_repo.py", line 232, in _clone_default_branch
+    git = clone(url, clone_path)
+  File "/usr/local/lib/python3.8/site-packages/dvc/scm.py", line 108, in clone
+    raise CloneError(str(exc))
+dvc.scm.CloneError: Failed to clone repo 'git@github.com:iterative/example-get-started.git' to '/tmp/tmp8mvwnvkbdvc-clone'
+------------------------------------------------------------
+2022-04-01 12:27:58,009 DEBUG: Analytics is enabled.
+2022-04-01 12:27:58,053 DEBUG: Trying to spawn '['daemon', '-q', 'analytics', '/tmp/tmpfukqgasg']'
+2022-04-01 12:27:58,054 DEBUG: Spawned '['daemon', '-q', 'analytics', '/tmp/tmpfukqgasg']'
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+```
